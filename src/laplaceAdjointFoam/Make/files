@@ -1,0 +1,14 @@
+
+laplaceAdjointFoam.C
+
+EXE = $(FOAM_USER_APPBIN)/laplaceAdjointFoam
+
+EXE_INC = \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude
+
+EXE_LIBS = \
+    -lfiniteVolume \
+    -lfvOptions \
+    -lmeshTools
+

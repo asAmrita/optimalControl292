@@ -1,0 +1,86 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.4                                   |
+|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+// Field Dictionary
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           volScalarField;
+    object          ud;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+dimensions      [0 0 0 0 0 0 0];
+
+
+//internalField	uniform 25;
+
+
+internalField   #codeStream
+    {
+	codeInclude
+	#{
+	    #include "fvCFD.H"
+	#};
+
+	codeOptions
+	#{
+	    -I$(LIB_SRC)/finiteVolume/lnInclude \
+	    -I$(LIB_SRC)/meshTools/lnInclude
+	#};
+
+	codeLibs
+	#{
+	    -lmeshTools \
+	    -lfiniteVolume
+	 #};
+
+	code
+	#{
+	    const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+	    const fvMesh& mesh = refCast<const fvMesh>(d.db());
+
+	    scalarField ud(mesh.nCells(), 0.);
+		scalar pi = constant::mathematical::pi;
+
+	    
+	    forAll(ud, i)
+	    {
+		const scalar x = mesh.C()[i][0];
+		const scalar y = mesh.C()[i][1];
+		const scalar lambda = 0.001;
+		const scalar uMin = -1.0;
+		const scalar uMax = 1.0;
+		
+		ud[i] = -sign(-sin(8*pi*x)*sin(8*pi*y));
+	    }
+
+	    ud.writeEntry("", os);
+	#};
+
+    };
+
+boundaryField
+{
+
+    dirichletBoundary
+    {
+	type		calculated;
+	value		uniform 0;
+    }
+
+    backAndFront           
+    {
+        type            empty;
+    }
+}
+// ************************************************************************* //

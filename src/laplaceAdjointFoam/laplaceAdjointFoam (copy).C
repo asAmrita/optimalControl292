@@ -66,10 +66,10 @@ int main(int argc, char *argv[])
         Jold = J;
 
         // Primal equation
-        solve(fvm::laplacian(k, y)-fvm::Sp(1.0,y) + beta * u + f);
+        solve(fvm::laplacian(k, y)-y + beta * u + f);
    
         // Adjoint equation
-        solve(fvm::laplacian(k, p)-fvm::Sp(1.0,p) + y - yd);
+        solve(fvm::laplacian(k, p)-p + y - yd);
 
         // Save current control
         uk = u;
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
             u.correctBoundaryConditions();
 
             // get new y
-            solve(fvm::laplacian(k, y) -fvm::Sp(1.0, y) + beta * u + f);
+            solve(fvm::laplacian(k, y) - y + beta * u + f);
 
             // get new cost
 			#include "costFunctionValue.H"
@@ -114,7 +114,6 @@ int main(int argc, char *argv[])
                 Info << "alpha NOT found, alpha = " << alpha << endl;
                 alpha = c2 * alpha;
             }
-            Info<<J<<endl;
         }
 
         Info << "Iteration no. " << runTime.timeName() << " - "

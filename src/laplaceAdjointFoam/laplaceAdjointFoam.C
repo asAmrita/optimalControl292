@@ -156,6 +156,8 @@ int main(int argc, char *argv[])
     p.write();
     u.write();
     uDiff.write();
+    pDiff.write();
+    yDiff.write();
     ud.write();
     //    uc.write();
     //    udiff.write();

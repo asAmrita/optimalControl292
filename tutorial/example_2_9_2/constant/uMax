@@ -55,7 +55,7 @@ boundaryField
     dirichletBoundary
     {
 	type		fixedValue;
-	value		uniform 0;
+	value		uniform 1;
     }
 
     backAndFront           

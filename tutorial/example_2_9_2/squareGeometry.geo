@@ -14,8 +14,8 @@ Line(4) = {4, 1};
 Line Loop(5) = {1, 2, 3, 4};
 Plane Surface(6) = {5};
 
-Transfinite Line{1, 3} = 100;
-Transfinite Line{2, 4} = 100;
+Transfinite Line{1, 3} = 101;
+Transfinite Line{2, 4} = 101;
 //Transfinite Line{1, 2, 3, 4} = 100;
 Transfinite Surface{6};
 Recombine Surface{6};

@@ -6,6 +6,6 @@ J = 0.5*gSum( volField * (
 forAll(patchesToIntegrate, i)
 {
     label patchi = mesh.boundaryMesh().findPatchID(patchesToIntegrate[i]);
-    J += gSum(
-        mesh.magSf().boundaryField()[patchi] *(-12)* (y.boundaryField()[patchi]));
+    J += -12.0*gSum(
+        mesh.magSf().boundaryField()[patchi] * (y.boundaryField()[patchi]));
 }

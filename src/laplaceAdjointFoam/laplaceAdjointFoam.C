@@ -136,12 +136,15 @@ int main(int argc, char *argv[])
         Info << "Iteration no. " << runTime.timeName() << " - " << "error " << error << endl;
 
 
-        uDiff = u - ud;
+       /* uDiff = u - ud;
         forAll(uDiff,i)
         {
             uDiff[i] = fabs(u[i] - ud[i]);
         }
-
+      */
+    uDiff=mag(u-ud);
+    pDiff=mag(p-pd);
+    yDiff=mag(y-yd);
         runTime.write();
     }
 

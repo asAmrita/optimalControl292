@@ -57,11 +57,13 @@ internalField   #codeStream
 	    {
 		const scalar x = mesh.C()[i][0];
 		const scalar y = mesh.C()[i][1];
-		const scalar lambda = 0.001;
-		const scalar uMin = -1.0;
-		const scalar uMax = 1.0;
+		//const scalar lambda = 0.001;
+		//const scalar uMin = -1.0;
+		//const scalar uMax = 1.0;
+        
 		
-		ud[i] = -sign(-sin(8*pi*x)*sin(8*pi*y));
+		//ud[i] = -sign(-sin(8*pi*x)*sin(8*pi*y));
+          ud[i]=  min(1,max(0,12*((x-0.5)*(x-0.5)+(y-0.5)*(y-0.5))-1/3) ); 
 	    }
 
 	    ud.writeEntry("", os);

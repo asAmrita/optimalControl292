@@ -48,8 +48,9 @@ int main(int argc, char *argv[])
     scalar J = 0;
     scalar Jold = 0;
     scalar Jk = 0;
-    scalar error = 0;
-
+    scalar erroru = 0;
+ scalar errory = 0;
+ scalar errorp = 0;
 // Compute cost function value
 #include "costFunctionValue.H"
 
@@ -67,10 +68,11 @@ int main(int argc, char *argv[])
 
         // Primal equation
         solve(fvm::laplacian(k, y)-fvm::Sp(1.0,y) + beta * u + f);
-   
+   // Info<<beta*u<<endl;
+   Info<<solve(fvm::laplacian(k,y)-fvm::Sp(1.0,y)+beta*u+f)<<endl;
         // Adjoint equation
         solve(fvm::laplacian(k, p)-fvm::Sp(1.0,p) + y - yd);
-
+       //Info<<fvm::Sp(2.0,p)<<endl;
         // Save current control
         uk = u;
 
@@ -127,15 +129,20 @@ int main(int argc, char *argv[])
         file.close();
 
         // calculate the L2 norm of the error in control variables
-        error = Foam::sqrt(gSum(volField * (Foam::pow(u.internalField() - ud.internalField(), 2))));
+        erroru = Foam::sqrt(gSum(volField * (Foam::pow(u.internalField() - ud.internalField(), 2))));
+         errory = Foam::sqrt(gSum(volField * (Foam::pow(y.internalField() - yd.internalField(), 2))));
+         errorp = Foam::sqrt(gSum(volField * (Foam::pow(p.internalField() - pd.internalField(), 2))));
         
         errorFile.open("error.csv",std::ios::app);
-        errorFile << runTime.value() << "," << error << nl;
+        errorFile << runTime.value() << "," << erroru << nl;
+
+        errorFile << runTime.value() << "," << errory << nl;
+        errorFile << runTime.value() << "," << errorp << nl;
         errorFile.close();
 
-        Info << "Iteration no. " << runTime.timeName() << " - " << "error " << error << endl;
-
-
+        Info << "Iteration no. " << runTime.timeName() << " - " << "error u " << erroru << nl;
+         Info << "Iteration no. " << runTime.timeName() << " - " << "error y " << errory << nl;
+         Info << "Iteration no. " << runTime.timeName() << " - " << "error p " << errorp << nl;
        /* uDiff = u - ud;
         forAll(uDiff,i)
         {
